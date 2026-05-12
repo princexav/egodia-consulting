@@ -18,11 +18,20 @@
 <meta name="twitter:title" content="Egodia Consulting LLC | We Don't Just Advise. We Deliver." />
 <meta name="twitter:description" content="Premier advisory firm helping organizations unlock growth, align strategy, and deliver lasting results." />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23b8933f'%3EE%3C/text%3E%3C/svg%3E" />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── FONT DEFINITIONS ── */
+/* Attempt to load Google Fonts silently if online */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 ```
+/* Bulletproof fallback font stack — works 100% offline/any host */
+:root {
+--font-serif: 'Cormorant Garamond', 'Palatino Linotype', 'Book Antiqua', Palatino, 'Times New Roman', Georgia, serif;
+--font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
 --ink: #0d0d0d;
 --cream: #f7f4ef;
@@ -36,7 +45,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-font-family: 'DM Sans', sans-serif;
+font-family: var(--font-sans);
 background: var(--cream);
 color: var(--ink);
 overflow-x: hidden;
@@ -69,7 +78,7 @@ transition: box-shadow 0.3s;
 }
 
 .nav-logo {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.45rem;
 font-weight: 700;
 letter-spacing: 0.04em;
@@ -188,7 +197,7 @@ background: var(--gold);
 }
 
 h1 {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: clamp(3rem, 5.5vw, 5.2rem);
 font-weight: 300;
 line-height: 1.08;
@@ -202,7 +211,7 @@ color: var(--gold);
 }
 
 .hero-slogan {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: clamp(1.1rem, 1.8vw, 1.45rem);
 font-weight: 600;
 font-style: italic;
@@ -281,7 +290,7 @@ justify-content: center;
 }
 
 .hero-monogram {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: clamp(8rem, 18vw, 18rem);
 font-weight: 700;
 color: rgba(255,255,255,0.04);
@@ -300,7 +309,7 @@ color: var(--cream);
 }
 
 .hero-badge-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 2.2rem;
 font-weight: 600;
 color: var(--gold-light);
@@ -389,7 +398,7 @@ background: var(--gold);
 }
 
 h2 {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: clamp(2.4rem, 4vw, 3.8rem);
 font-weight: 300;
 line-height: 1.12;
@@ -440,7 +449,7 @@ gap: 0.5rem;
 }
 
 .about-inner-text .big-letter {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 9rem;
 font-weight: 700;
 color: rgba(255,255,255,0.06);
@@ -463,7 +472,7 @@ z-index: 3;
 }
 
 .about-accent-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 2.6rem;
 font-weight: 700;
 color: var(--white);
@@ -583,7 +592,7 @@ border-color: rgba(247,244,239,0.2);
 }
 
 .service-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 3rem;
 font-weight: 700;
 color: rgba(13,13,13,0.07);
@@ -595,7 +604,7 @@ z-index: 1;
 }
 
 .service-title {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.45rem;
 font-weight: 600;
 color: var(--ink);
@@ -676,7 +685,7 @@ transition: border-color 0.3s;
 .testi-card:hover { border-color: rgba(184,147,63,0.5); }
 
 .testi-quote-mark {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 5rem;
 color: var(--gold);
 line-height: 0.6;
@@ -705,7 +714,7 @@ background: var(--gold);
 display: flex;
 align-items: center;
 justify-content: center;
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.1rem;
 font-weight: 700;
 color: var(--white);
@@ -798,7 +807,7 @@ color: var(--muted);
 .field input,
 .field select,
 .field textarea {
-font-family: 'DM Sans', sans-serif;
+font-family: var(--font-sans);
 font-size: 0.9rem;
 color: var(--ink);
 background: var(--cream);
@@ -817,7 +826,7 @@ border-color: var(--gold);
 }
 
 .form-submit {
-font-family: 'DM Sans', sans-serif;
+font-family: var(--font-sans);
 font-size: 0.8rem;
 letter-spacing: 0.12em;
 text-transform: uppercase;
@@ -861,7 +870,7 @@ border-top: 1px solid rgba(184,147,63,0.15);
 }
 
 .footer-logo {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.2rem;
 font-weight: 700;
 color: var(--cream);
@@ -1056,7 +1065,7 @@ margin-bottom: 1.5rem;
 }
 
 .case-client {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.9rem;
 font-weight: 600;
 color: var(--cream);
@@ -1081,7 +1090,7 @@ padding-top: 1.5rem;
 }
 
 .case-result-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 3.5rem;
 font-weight: 700;
 color: var(--gold-light);
@@ -1125,7 +1134,7 @@ line-height: 1.3;
 }
 
 .case-step-title {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.2rem;
 font-weight: 600;
 color: var(--ink);
@@ -1188,7 +1197,7 @@ justify-content: space-between;
 gap: 1rem;
 cursor: pointer;
 text-align: left;
-font-family: 'DM Sans', sans-serif;
+font-family: var(--font-sans);
 font-size: 0.95rem;
 font-weight: 600;
 color: var(--ink);
@@ -1355,7 +1364,7 @@ transition: background 0.3s;
 .metric-card:hover .metric-desc { color: rgba(247,244,239,0.6) !important; }
 
 .metric-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: clamp(3rem, 5vw, 4.5rem);
 font-weight: 700;
 color: var(--ink);
@@ -1364,7 +1373,7 @@ transition: color 0.3s;
 }
 
 .metric-suffix {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 2rem;
 font-weight: 600;
 color: var(--ink);
@@ -1451,7 +1460,7 @@ display: block;
 }
 
 .industry-name {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.3rem;
 font-weight: 600;
 color: var(--ink);
@@ -1561,7 +1570,7 @@ background: var(--gold);
 }
 
 .step-dot-num {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.3rem;
 font-weight: 700;
 color: var(--gold-light);
@@ -1579,7 +1588,7 @@ margin-bottom: 0.5rem;
 }
 
 .step-title {
-font-family: 'Cormorant Garamond', serif;
+font-family: var(--font-serif);
 font-size: 1.5rem;
 font-weight: 600;
 color: var(--cream);
