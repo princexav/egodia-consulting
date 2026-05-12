@@ -1,1436 +1,2346 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Egodia Consulting LLC</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
-        rel="stylesheet" />
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        :root {
-            --ink: #0d0d0d;
-            --cream: #f7f4ef;
-            --gold: #b8933f;
-            --gold-light: #d4b06a;
-            --muted: #6b6459;
-            --line: rgba(184, 147, 63, 0.25);
-            --white: #ffffff;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--cream);
-            color: var(--ink);
-            overflow-x: hidden;
-        }
-
-        /* ── NOISE TEXTURE OVERLAY ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.4;
-        }
-
-        /* ── NAV ── */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.4rem 5vw;
-            background: rgba(247, 244, 239, 0.88);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid var(--line);
-            transition: box-shadow 0.3s;
-        }
-
-        .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            color: var(--ink);
-            text-decoration: none;
-        }
-
-        .nav-logo span {
-            color: var(--gold);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.4rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            font-size: 0.82rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        .nav-cta {
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--white);
-            background: var(--ink);
-            padding: 0.65rem 1.4rem;
-            text-decoration: none;
-            border: 1px solid var(--ink);
-            transition: background 0.25s, color 0.25s;
-        }
-
-        .nav-cta:hover {
-            background: var(--gold);
-            border-color: var(--gold);
-        }
-
-        /* Hamburger */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            width: 24px;
-            height: 2px;
-            background: var(--ink);
-            transition: all 0.3s;
-            display: block;
-        }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 65px;
-            left: 0;
-            right: 0;
-            background: var(--cream);
-            border-bottom: 1px solid var(--line);
-            padding: 1.5rem 5vw 2rem;
-            z-index: 99;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .mobile-menu.open {
-            display: flex;
-        }
-
-        .mobile-menu a {
-            font-size: 0.9rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
-
-            .nav-links,
-            .nav-cta {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-        }
-
-        /* ── HERO ── */
-        #home {
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding-top: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-left {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 6vw 4vw 6vw 6vw;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-eyebrow {
-            font-size: 0.75rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 1.6rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .hero-eyebrow::before {
-            content: '';
-            width: 36px;
-            height: 1px;
-            background: var(--gold);
-        }
-
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(3rem, 5.5vw, 5.2rem);
-            font-weight: 300;
-            line-height: 1.08;
-            color: var(--ink);
-            margin-bottom: 1.8rem;
-        }
-
-        h1 em {
-            font-style: italic;
-            color: var(--gold);
-        }
-
-        .hero-sub {
-            font-size: 1rem;
-            line-height: 1.75;
-            color: var(--muted);
-            max-width: 440px;
-            margin-bottom: 2.8rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--white);
-            background: var(--ink);
-            padding: 0.9rem 2rem;
-            text-decoration: none;
-            border: 1px solid var(--ink);
-            transition: background 0.25s, color 0.25s, border-color 0.25s;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            background: var(--gold);
-            border-color: var(--gold);
-        }
-
-        .btn-secondary {
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--ink);
-            background: transparent;
-            padding: 0.9rem 2rem;
-            text-decoration: none;
-            border: 1px solid var(--ink);
-            transition: background 0.25s, color 0.25s;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: var(--ink);
-            color: var(--white);
-        }
-
-        .hero-right {
-            position: relative;
-            background: var(--ink);
-            overflow: hidden;
-        }
-
-        .hero-right::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 70% 30%, rgba(184, 147, 63, 0.18) 0%, transparent 60%),
-                radial-gradient(ellipse at 20% 80%, rgba(184, 147, 63, 0.1) 0%, transparent 50%);
-        }
-
-        .hero-graphic {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-monogram {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(8rem, 18vw, 18rem);
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.04);
-            letter-spacing: -0.04em;
-            user-select: none;
-            line-height: 1;
-        }
-
-        .hero-badge {
-            position: absolute;
-            bottom: 2.5rem;
-            left: 2.5rem;
-            border: 1px solid rgba(184, 147, 63, 0.4);
-            padding: 1.2rem 1.6rem;
-            color: var(--cream);
-        }
-
-        .hero-badge-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--gold-light);
-            line-height: 1;
-        }
-
-        .hero-badge-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: rgba(247, 244, 239, 0.55);
-            margin-top: 0.3rem;
-        }
-
-        .hero-stat-line {
-            position: absolute;
-            bottom: 2rem;
-            right: 0;
-            left: 0;
-            display: flex;
-            justify-content: flex-end;
-            gap: 2rem;
-            padding: 0 2.5rem;
-        }
-
-        @media (max-width: 768px) {
-            #home {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-right {
-                min-height: 300px;
-            }
-
-            .hero-left {
-                padding: 3rem 6vw;
-            }
-        }
-
-        /* ── TICKER ── */
-        .ticker-wrap {
-            background: var(--ink);
-            overflow: hidden;
-            padding: 0.9rem 0;
-            border-top: 1px solid rgba(184, 147, 63, 0.2);
-        }
-
-        .ticker-track {
-            display: flex;
-            gap: 4rem;
-            white-space: nowrap;
-            animation: ticker 28s linear infinite;
-        }
-
-        .ticker-item {
-            font-size: 0.72rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(247, 244, 239, 0.45);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .ticker-item::before {
-            content: '◆';
-            color: var(--gold);
-            font-size: 0.5rem;
-        }
-
-        @keyframes ticker {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        /* ── SECTION BASE ── */
-        section {
-            padding: 7rem 6vw;
-        }
-
-        .section-label {
-            font-size: 0.72rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .section-label::before {
-            content: '';
-            width: 28px;
-            height: 1px;
-            background: var(--gold);
-        }
-
-        h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.4rem, 4vw, 3.8rem);
-            font-weight: 300;
-            line-height: 1.12;
-            color: var(--ink);
-            margin-bottom: 1.4rem;
-        }
-
-        h2 em {
-            font-style: italic;
-            color: var(--gold);
-        }
-
-        /* ── ABOUT ── */
-        #about {
-            background: var(--white);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5vw;
-            align-items: center;
-        }
-
-        .about-visual {
-            position: relative;
-        }
-
-        .about-img-frame {
-            width: 100%;
-            aspect-ratio: 4/5;
-            background: var(--ink);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-img-frame::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 40% 40%, rgba(184, 147, 63, 0.22) 0%, transparent 60%);
-        }
-
-        .about-inner-text {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            gap: 0.5rem;
-        }
-
-        .about-inner-text .big-letter {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 9rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.06);
-            line-height: 1;
-            user-select: none;
-        }
-
-        .about-accent-box {
-            position: absolute;
-            bottom: -1.5rem;
-            right: -1.5rem;
-            background: var(--gold);
-            width: 120px;
-            height: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-        }
-
-        .about-accent-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1;
-        }
-
-        .about-accent-lbl {
-            font-size: 0.65rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.8);
-            text-align: center;
-        }
-
-        .about-content p {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--muted);
-            margin-bottom: 1.2rem;
-        }
-
-        .about-pillars {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2.5rem;
-        }
-
-        .pillar {
-            border: 1px solid var(--line);
-            padding: 1.2rem;
-        }
-
-        .pillar-icon {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .pillar-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--ink);
-            margin-bottom: 0.3rem;
-        }
-
-        .pillar-desc {
-            font-size: 0.82rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            #about {
-                grid-template-columns: 1fr;
-            }
-
-            .about-pillars {
-                grid-template-columns: 1fr;
-            }
-
-            .about-accent-box {
-                right: 0;
-            }
-        }
-
-        /* ── SERVICES ── */
-        #services {
-            background: var(--cream);
-        }
-
-        .services-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: end;
-            margin-bottom: 4rem;
-        }
-
-        .services-header p {
-            font-size: 1rem;
-            color: var(--muted);
-            line-height: 1.75;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            border: 1px solid var(--line);
-        }
-
-        .service-card {
-            padding: 2.5rem 2rem;
-            border-right: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s;
-            cursor: default;
-        }
-
-        .service-card:nth-child(3n) {
-            border-right: none;
-        }
-
-        .service-card:nth-last-child(-n+3) {
-            border-bottom: none;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--ink);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .service-card:hover::before {
-            transform: translateY(0);
-        }
-
-        .service-card:hover .service-num,
-        .service-card:hover .service-title,
-        .service-card:hover .service-desc,
-        .service-card:hover .service-tags span {
-            color: var(--cream) !important;
-        }
-
-        .service-card:hover .service-tags span {
-            border-color: rgba(247, 244, 239, 0.2);
-        }
-
-        .service-num {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem;
-            font-weight: 700;
-            color: rgba(13, 13, 13, 0.07);
-            line-height: 1;
-            margin-bottom: 1.5rem;
-            transition: color 0.3s;
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.45rem;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 0.8rem;
-            line-height: 1.2;
-            transition: color 0.3s;
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-desc {
-            font-size: 0.88rem;
-            line-height: 1.7;
-            color: var(--muted);
-            margin-bottom: 1.5rem;
-            transition: color 0.3s;
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .service-tags span {
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--muted);
-            border: 1px solid var(--line);
-            padding: 0.25rem 0.6rem;
-            transition: color 0.3s, border-color 0.3s;
-        }
-
-        @media (max-width: 900px) {
-            .services-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .service-card:nth-child(3n) {
-                border-right: 1px solid var(--line);
-            }
-
-            .service-card:nth-child(2n) {
-                border-right: none;
-            }
-
-            .services-header {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 580px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .service-card {
-                border-right: none;
-            }
-
-            .service-card:nth-last-child(-n+1) {
-                border-bottom: none;
-            }
-
-            .service-card:nth-last-child(-n+3) {
-                border-bottom: 1px solid var(--line);
-            }
-
-            .service-card:last-child {
-                border-bottom: none;
-            }
-        }
-
-        /* ── TESTIMONIALS ── */
-        #testimonials {
-            background: var(--ink);
-            color: var(--cream);
-        }
-
-        #testimonials .section-label {
-            color: var(--gold-light);
-        }
-
-        #testimonials .section-label::before {
-            background: var(--gold-light);
-        }
-
-        #testimonials h2 {
-            color: var(--cream);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 3.5rem;
-        }
-
-        .testi-card {
-            border: 1px solid rgba(184, 147, 63, 0.2);
-            padding: 2.2rem;
-            position: relative;
-            transition: border-color 0.3s;
-        }
-
-        .testi-card:hover {
-            border-color: rgba(184, 147, 63, 0.5);
-        }
-
-        .testi-quote-mark {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
-            color: var(--gold);
-            line-height: 0.6;
-            margin-bottom: 1.2rem;
-            opacity: 0.6;
-        }
-
-        .testi-text {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: rgba(247, 244, 239, 0.75);
-            margin-bottom: 1.8rem;
-        }
-
-        .testi-author {
-            display: flex;
-            align-items: center;
-            gap: 0.9rem;
-        }
-
-        .testi-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--white);
-            flex-shrink: 0;
-        }
-
-        .testi-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--cream);
-        }
-
-        .testi-role {
-            font-size: 0.75rem;
-            color: rgba(247, 244, 239, 0.45);
-            letter-spacing: 0.05em;
-        }
-
-        @media (max-width: 900px) {
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ── CONTACT ── */
-        #contact {
-            background: var(--white);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5vw;
-            align-items: start;
-        }
-
-        .contact-info p {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--muted);
-            margin-bottom: 2.5rem;
-        }
-
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--cream);
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .contact-item-label {
-            font-size: 0.7rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 0.2rem;
-        }
-
-        .contact-item-val {
-            font-size: 0.92rem;
-            color: var(--ink);
-        }
-
-        /* Form */
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .field label {
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-        }
-
-        .field input,
-        .field select,
-        .field textarea {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            color: var(--ink);
-            background: var(--cream);
-            border: 1px solid rgba(0, 0, 0, 0.12);
-            padding: 0.85rem 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-            resize: none;
-            appearance: none;
-        }
-
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus {
-            border-color: var(--gold);
-        }
-
-        .form-submit {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--white);
-            background: var(--ink);
-            padding: 1rem 2rem;
-            border: 1px solid var(--ink);
-            cursor: pointer;
-            transition: background 0.25s, border-color 0.25s;
-            margin-top: 0.4rem;
-            text-align: center;
-        }
-
-        .form-submit:hover {
-            background: var(--gold);
-            border-color: var(--gold);
-        }
-
-        .form-success {
-            display: none;
-            background: var(--cream);
-            border: 1px solid var(--gold);
-            padding: 1rem 1.4rem;
-            font-size: 0.9rem;
-            color: var(--ink);
-        }
-
-        @media (max-width: 768px) {
-            #contact {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            background: var(--ink);
-            color: rgba(247, 244, 239, 0.5);
-            padding: 3rem 6vw;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            border-top: 1px solid rgba(184, 147, 63, 0.15);
-        }
-
-        .footer-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--cream);
-        }
-
-        .footer-logo span {
-            color: var(--gold);
-        }
-
-        footer p {
-            font-size: 0.78rem;
-            letter-spacing: 0.06em;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.6rem;
-            list-style: none;
-        }
-
-        .footer-links a {
-            font-size: 0.78rem;
-            color: rgba(247, 244, 239, 0.45);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--gold);
-        }
-
-        /* ── SCROLL ANIMATIONS ── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 {
-            transition-delay: 0.1s;
-        }
-
-        .reveal-delay-2 {
-            transition-delay: 0.2s;
-        }
-
-        .reveal-delay-3 {
-            transition-delay: 0.3s;
-        }
-
-        .reveal-delay-4 {
-            transition-delay: 0.4s;
-        }
-
-        .reveal-delay-5 {
-            transition-delay: 0.5s;
-        }
-
-        /* ── DIVIDER ── */
-        .gold-divider {
-            width: 48px;
-            height: 2px;
-            background: var(--gold);
-            margin: 1.5rem 0 2rem;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Egodia Consulting LLC | We Don't Just Advise. We Deliver.</title>
+<meta name="description" content="Egodia Consulting LLC is a premier advisory firm specializing in Business Strategy, HR & Organizational Development, Financial Advisory, Technology Consulting, and Process Optimization." />
+<meta name="keywords" content="business consulting, HR consulting, organizational development, strategy consulting, financial advisory, process optimization, Egodia Consulting" />
+<meta name="author" content="Egodia Consulting LLC" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Egodia Consulting LLC | We Don't Just Advise. We Deliver." />
+<meta property="og:description" content="Premier advisory firm helping organizations unlock growth, align strategy, and deliver lasting results. Expertise in HR, Strategy, Technology, and Financial Advisory." />
+<meta property="og:url" content="https://egodiaconsulting.com" />
+<meta property="og:site_name" content="Egodia Consulting LLC" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Egodia Consulting LLC | We Don't Just Advise. We Deliver." />
+<meta name="twitter:description" content="Premier advisory firm helping organizations unlock growth, align strategy, and deliver lasting results." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23b8933f'%3EE%3C/text%3E%3C/svg%3E" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+:root {
+--ink: #0d0d0d;
+--cream: #f7f4ef;
+--gold: #b8933f;
+--gold-light: #d4b06a;
+--muted: #6b6459;
+--line: rgba(184,147,63,0.25);
+--white: #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+font-family: 'DM Sans', sans-serif;
+background: var(--cream);
+color: var(--ink);
+overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+pointer-events: none;
+z-index: 9999;
+opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 1.4rem 5vw;
+background: rgba(247,244,239,0.88);
+backdrop-filter: blur(14px);
+border-bottom: 1px solid var(--line);
+transition: box-shadow 0.3s;
+}
+
+.nav-logo {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.45rem;
+font-weight: 700;
+letter-spacing: 0.04em;
+color: var(--ink);
+text-decoration: none;
+}
+
+.nav-logo span { color: var(--gold); }
+
+.nav-links {
+display: flex;
+gap: 2.4rem;
+list-style: none;
+}
+
+.nav-links a {
+font-size: 0.82rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--muted);
+text-decoration: none;
+transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+font-size: 0.8rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--white);
+background: var(--ink);
+padding: 0.65rem 1.4rem;
+text-decoration: none;
+border: 1px solid var(--ink);
+transition: background 0.25s, color 0.25s;
+}
+
+.nav-cta:hover { background: var(--gold); border-color: var(--gold); }
+
+/* Hamburger */
+.hamburger {
+display: none;
+flex-direction: column;
+gap: 5px;
+cursor: pointer;
+background: none;
+border: none;
+padding: 4px;
+}
+.hamburger span {
+width: 24px; height: 2px;
+background: var(--ink);
+transition: all 0.3s;
+display: block;
+}
+.mobile-menu {
+display: none;
+position: fixed;
+top: 65px; left: 0; right: 0;
+background: var(--cream);
+border-bottom: 1px solid var(--line);
+padding: 1.5rem 5vw 2rem;
+z-index: 99;
+flex-direction: column;
+gap: 1.2rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+font-size: 0.9rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted);
+text-decoration: none;
+}
+
+@media (max-width: 768px) {
+.nav-links, .nav-cta { display: none; }
+.hamburger { display: flex; }
+}
+
+/* ── HERO ── */
+#home {
+min-height: 100vh;
+display: grid;
+grid-template-columns: 1fr 1fr;
+padding-top: 80px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-left {
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 6vw 4vw 6vw 6vw;
+position: relative;
+z-index: 2;
+}
+
+.hero-eyebrow {
+font-size: 0.75rem;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 1.6rem;
+display: flex;
+align-items: center;
+gap: 0.8rem;
+}
+
+.hero-eyebrow::before {
+content: '';
+width: 36px; height: 1px;
+background: var(--gold);
+}
+
+h1 {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(3rem, 5.5vw, 5.2rem);
+font-weight: 300;
+line-height: 1.08;
+color: var(--ink);
+margin-bottom: 1.8rem;
+}
+
+h1 em {
+font-style: italic;
+color: var(--gold);
+}
+
+.hero-slogan {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+font-weight: 600;
+font-style: italic;
+color: var(--gold);
+letter-spacing: 0.03em;
+margin-bottom: 1rem;
+border-left: 3px solid var(--gold);
+padding-left: 1rem;
+}
+
+.hero-sub {
+font-size: 1rem;
+line-height: 1.75;
+color: var(--muted);
+max-width: 440px;
+margin-bottom: 2.8rem;
+}
+
+.hero-actions {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+}
+
+.btn-primary {
+font-size: 0.8rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--white);
+background: var(--ink);
+padding: 0.9rem 2rem;
+text-decoration: none;
+border: 1px solid var(--ink);
+transition: background 0.25s, color 0.25s, border-color 0.25s;
+display: inline-block;
+}
+
+.btn-primary:hover { background: var(--gold); border-color: var(--gold); }
+
+.btn-secondary {
+font-size: 0.8rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--ink);
+background: transparent;
+padding: 0.9rem 2rem;
+text-decoration: none;
+border: 1px solid var(--ink);
+transition: background 0.25s, color 0.25s;
+display: inline-block;
+}
+
+.btn-secondary:hover { background: var(--ink); color: var(--white); }
+
+.hero-right {
+position: relative;
+background: var(--ink);
+overflow: hidden;
+}
+
+.hero-right::before {
+content: '';
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse at 70% 30%, rgba(184,147,63,0.18) 0%, transparent 60%),
+radial-gradient(ellipse at 20% 80%, rgba(184,147,63,0.1) 0%, transparent 50%);
+}
+
+.hero-graphic {
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.hero-monogram {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(8rem, 18vw, 18rem);
+font-weight: 700;
+color: rgba(255,255,255,0.04);
+letter-spacing: -0.04em;
+user-select: none;
+line-height: 1;
+}
+
+.hero-badge {
+position: absolute;
+bottom: 2.5rem;
+left: 2.5rem;
+border: 1px solid rgba(184,147,63,0.4);
+padding: 1.2rem 1.6rem;
+color: var(--cream);
+}
+
+.hero-badge-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 2.2rem;
+font-weight: 600;
+color: var(--gold-light);
+line-height: 1;
+}
+
+.hero-badge-label {
+font-size: 0.7rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: rgba(247,244,239,0.55);
+margin-top: 0.3rem;
+}
+
+.hero-stat-line {
+position: absolute;
+bottom: 2rem;
+right: 0;
+left: 0;
+display: flex;
+justify-content: flex-end;
+gap: 2rem;
+padding: 0 2.5rem;
+}
+
+@media (max-width: 768px) {
+#home { grid-template-columns: 1fr; }
+.hero-right { min-height: 300px; }
+.hero-left { padding: 3rem 6vw; }
+}
+
+/* ── TICKER ── */
+.ticker-wrap {
+background: var(--ink);
+overflow: hidden;
+padding: 0.9rem 0;
+border-top: 1px solid rgba(184,147,63,0.2);
+}
+
+.ticker-track {
+display: flex;
+gap: 4rem;
+white-space: nowrap;
+animation: ticker 28s linear infinite;
+}
+
+.ticker-item {
+font-size: 0.72rem;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: rgba(247,244,239,0.45);
+display: flex;
+align-items: center;
+gap: 1rem;
+}
+
+.ticker-item::before {
+content: '◆';
+color: var(--gold);
+font-size: 0.5rem;
+}
+
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+/* ── SECTION BASE ── */
+section { padding: 7rem 6vw; }
+
+.section-label {
+font-size: 0.72rem;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 1rem;
+display: flex;
+align-items: center;
+gap: 0.8rem;
+}
+
+.section-label::before {
+content: '';
+width: 28px; height: 1px;
+background: var(--gold);
+}
+
+h2 {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2.4rem, 4vw, 3.8rem);
+font-weight: 300;
+line-height: 1.12;
+color: var(--ink);
+margin-bottom: 1.4rem;
+}
+
+h2 em { font-style: italic; color: var(--gold); }
+
+/* ── ABOUT ── */
+#about {
+background: var(--white);
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 5vw;
+align-items: center;
+}
+
+.about-visual {
+position: relative;
+}
+
+.about-img-frame {
+width: 100%;
+aspect-ratio: 4/5;
+background: var(--ink);
+position: relative;
+overflow: hidden;
+}
+
+.about-img-frame::after {
+content: '';
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse at 40% 40%, rgba(184,147,63,0.22) 0%, transparent 60%);
+}
+
+.about-inner-text {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 2;
+gap: 0.5rem;
+}
+
+.about-inner-text .big-letter {
+font-family: 'Cormorant Garamond', serif;
+font-size: 9rem;
+font-weight: 700;
+color: rgba(255,255,255,0.06);
+line-height: 1;
+user-select: none;
+}
+
+.about-accent-box {
+position: absolute;
+bottom: -1.5rem;
+right: -1.5rem;
+background: var(--gold);
+width: 120px;
+height: 120px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 3;
+}
+
+.about-accent-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 2.6rem;
+font-weight: 700;
+color: var(--white);
+line-height: 1;
+}
+
+.about-accent-lbl {
+font-size: 0.65rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.8);
+text-align: center;
+}
+
+.about-content p {
+font-size: 1rem;
+line-height: 1.8;
+color: var(--muted);
+margin-bottom: 1.2rem;
+}
+
+.about-pillars {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin-top: 2.5rem;
+}
+
+.pillar {
+border: 1px solid var(--line);
+padding: 1.2rem;
+}
+
+.pillar-icon {
+font-size: 1.3rem;
+margin-bottom: 0.5rem;
+}
+
+.pillar-title {
+font-size: 0.8rem;
+font-weight: 600;
+letter-spacing: 0.06em;
+text-transform: uppercase;
+color: var(--ink);
+margin-bottom: 0.3rem;
+}
+
+.pillar-desc {
+font-size: 0.82rem;
+color: var(--muted);
+line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+#about { grid-template-columns: 1fr; }
+.about-pillars { grid-template-columns: 1fr; }
+.about-accent-box { right: 0; }
+}
+
+/* ── SERVICES ── */
+#services { background: var(--cream); }
+
+.services-header {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3rem;
+align-items: end;
+margin-bottom: 4rem;
+}
+
+.services-header p {
+font-size: 1rem;
+color: var(--muted);
+line-height: 1.75;
+}
+
+.services-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 0;
+border: 1px solid var(--line);
+}
+
+.service-card {
+padding: 2.5rem 2rem;
+border-right: 1px solid var(--line);
+border-bottom: 1px solid var(--line);
+position: relative;
+overflow: hidden;
+transition: background 0.3s;
+cursor: default;
+}
+
+.service-card:nth-child(3n) { border-right: none; }
+.service-card:nth-last-child(-n+3) { border-bottom: none; }
+
+.service-card::before {
+content: '';
+position: absolute;
+inset: 0;
+background: var(--ink);
+transform: translateY(100%);
+transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+.service-card:hover::before { transform: translateY(0); }
+
+.service-card:hover .service-num,
+.service-card:hover .service-title,
+.service-card:hover .service-desc,
+.service-card:hover .service-tags span {
+color: var(--cream) !important;
+}
+
+.service-card:hover .service-tags span {
+border-color: rgba(247,244,239,0.2);
+}
+
+.service-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 3rem;
+font-weight: 700;
+color: rgba(13,13,13,0.07);
+line-height: 1;
+margin-bottom: 1.5rem;
+transition: color 0.3s;
+position: relative;
+z-index: 1;
+}
+
+.service-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.45rem;
+font-weight: 600;
+color: var(--ink);
+margin-bottom: 0.8rem;
+line-height: 1.2;
+transition: color 0.3s;
+position: relative;
+z-index: 1;
+}
+
+.service-desc {
+font-size: 0.88rem;
+line-height: 1.7;
+color: var(--muted);
+margin-bottom: 1.5rem;
+transition: color 0.3s;
+position: relative;
+z-index: 1;
+}
+
+.service-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.4rem;
+position: relative;
+z-index: 1;
+}
+
+.service-tags span {
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--muted);
+border: 1px solid var(--line);
+padding: 0.25rem 0.6rem;
+transition: color 0.3s, border-color 0.3s;
+}
+
+@media (max-width: 900px) {
+.services-grid { grid-template-columns: 1fr 1fr; }
+.service-card:nth-child(3n) { border-right: 1px solid var(--line); }
+.service-card:nth-child(2n) { border-right: none; }
+.services-header { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 580px) {
+.services-grid { grid-template-columns: 1fr; }
+.service-card { border-right: none; }
+.service-card:nth-last-child(-n+1) { border-bottom: none; }
+.service-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+.service-card:last-child { border-bottom: none; }
+}
+
+/* ── TESTIMONIALS ── */
+#testimonials {
+background: var(--ink);
+color: var(--cream);
+}
+
+#testimonials .section-label { color: var(--gold-light); }
+#testimonials .section-label::before { background: var(--gold-light); }
+#testimonials h2 { color: var(--cream); }
+
+.testimonials-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1.5rem;
+margin-top: 3.5rem;
+}
+
+.testi-card {
+border: 1px solid rgba(184,147,63,0.2);
+padding: 2.2rem;
+position: relative;
+transition: border-color 0.3s;
+}
+
+.testi-card:hover { border-color: rgba(184,147,63,0.5); }
+
+.testi-quote-mark {
+font-family: 'Cormorant Garamond', serif;
+font-size: 5rem;
+color: var(--gold);
+line-height: 0.6;
+margin-bottom: 1.2rem;
+opacity: 0.6;
+}
+
+.testi-text {
+font-size: 0.95rem;
+line-height: 1.8;
+color: rgba(247,244,239,0.75);
+margin-bottom: 1.8rem;
+}
+
+.testi-author {
+display: flex;
+align-items: center;
+gap: 0.9rem;
+}
+
+.testi-avatar {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+background: var(--gold);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.1rem;
+font-weight: 700;
+color: var(--white);
+flex-shrink: 0;
+}
+
+.testi-name {
+font-size: 0.9rem;
+font-weight: 600;
+color: var(--cream);
+}
+
+.testi-role {
+font-size: 0.75rem;
+color: rgba(247,244,239,0.45);
+letter-spacing: 0.05em;
+}
+
+@media (max-width: 900px) {
+.testimonials-grid { grid-template-columns: 1fr; }
+}
+
+/* ── CONTACT ── */
+#contact {
+background: var(--white);
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 5vw;
+align-items: start;
+}
+
+.contact-info p {
+font-size: 1rem;
+line-height: 1.8;
+color: var(--muted);
+margin-bottom: 2.5rem;
+}
+
+.contact-details {
+display: flex;
+flex-direction: column;
+gap: 1.2rem;
+}
+
+.contact-item {
+display: flex;
+align-items: flex-start;
+gap: 1rem;
+}
+
+.contact-icon {
+width: 40px;
+height: 40px;
+background: var(--cream);
+border: 1px solid var(--line);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem;
+flex-shrink: 0;
+}
+
+.contact-item-label {
+font-size: 0.7rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 0.2rem;
+}
+
+.contact-item-val {
+font-size: 0.92rem;
+color: var(--ink);
+}
+
+/* Form */
+.contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field label {
+font-size: 0.72rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+font-family: 'DM Sans', sans-serif;
+font-size: 0.9rem;
+color: var(--ink);
+background: var(--cream);
+border: 1px solid rgba(0,0,0,0.12);
+padding: 0.85rem 1rem;
+outline: none;
+transition: border-color 0.2s;
+resize: none;
+appearance: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+border-color: var(--gold);
+}
+
+.form-submit {
+font-family: 'DM Sans', sans-serif;
+font-size: 0.8rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--white);
+background: var(--ink);
+padding: 1rem 2rem;
+border: 1px solid var(--ink);
+cursor: pointer;
+transition: background 0.25s, border-color 0.25s;
+margin-top: 0.4rem;
+text-align: center;
+}
+
+.form-submit:hover { background: var(--gold); border-color: var(--gold); }
+
+.form-success {
+display: none;
+background: var(--cream);
+border: 1px solid var(--gold);
+padding: 1rem 1.4rem;
+font-size: 0.9rem;
+color: var(--ink);
+}
+
+@media (max-width: 768px) {
+#contact { grid-template-columns: 1fr; }
+.form-row { grid-template-columns: 1fr; }
+}
+
+/* ── FOOTER ── */
+footer {
+background: var(--ink);
+color: rgba(247,244,239,0.5);
+padding: 3rem 6vw;
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 1rem;
+border-top: 1px solid rgba(184,147,63,0.15);
+}
+
+.footer-logo {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.2rem;
+font-weight: 700;
+color: var(--cream);
+}
+
+.footer-logo span { color: var(--gold); }
+
+footer p {
+font-size: 0.78rem;
+letter-spacing: 0.06em;
+}
+
+.footer-links {
+display: flex;
+gap: 1.6rem;
+list-style: none;
+}
+
+.footer-links a {
+font-size: 0.78rem;
+color: rgba(247,244,239,0.45);
+text-decoration: none;
+transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--gold); }
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ── CREDENTIALS BAR ── */
+#credentials {
+background: var(--white);
+padding: 4rem 6vw;
+border-top: 1px solid var(--line);
+border-bottom: 1px solid var(--line);
+}
+
+.creds-header {
+text-align: center;
+margin-bottom: 2.8rem;
+}
+
+.creds-header .section-label { justify-content: center; }
+
+.creds-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: 1rem;
+}
+
+.cred-badge {
+border: 1px solid var(--line);
+padding: 1.6rem 1.2rem;
+text-align: center;
+transition: border-color 0.3s, transform 0.3s;
+background: var(--cream);
+}
+
+.cred-badge:hover {
+border-color: var(--gold);
+transform: translateY(-3px);
+}
+
+.cred-icon {
+font-size: 2rem;
+margin-bottom: 0.7rem;
+display: block;
+}
+
+.cred-title {
+font-size: 0.82rem;
+font-weight: 600;
+letter-spacing: 0.06em;
+text-transform: uppercase;
+color: var(--ink);
+margin-bottom: 0.3rem;
+}
+
+.cred-sub {
+font-size: 0.72rem;
+color: var(--muted);
+line-height: 1.4;
+}
+
+@media (max-width: 900px) { .creds-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 580px) { .creds-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── BOOK A CALL CTA BANNER ── */
+#book-call {
+background: var(--ink);
+padding: 5rem 6vw;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 2rem;
+flex-wrap: wrap;
+}
+
+.book-call-left h2 {
+color: var(--cream);
+font-size: clamp(1.8rem, 3vw, 2.8rem);
+margin-bottom: 0.6rem;
+}
+
+.book-call-left h2 em { color: var(--gold-light); }
+
+.book-call-left p {
+font-size: 0.95rem;
+color: rgba(247,244,239,0.6);
+max-width: 520px;
+line-height: 1.7;
+}
+
+.book-call-right {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 1rem;
+flex-shrink: 0;
+}
+
+.btn-book {
+font-size: 0.85rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--ink);
+background: var(--gold);
+padding: 1.1rem 2.5rem;
+text-decoration: none;
+border: 1px solid var(--gold);
+transition: background 0.25s, color 0.25s, border-color 0.25s;
+display: inline-block;
+font-weight: 600;
+white-space: nowrap;
+}
+
+.btn-book:hover { background: var(--cream); border-color: var(--cream); }
+
+.book-note {
+font-size: 0.75rem;
+color: rgba(247,244,239,0.4);
+letter-spacing: 0.06em;
+}
+
+/* ── CASE STUDY ── */
+#case-study {
+background: var(--cream);
+padding: 7rem 6vw;
+}
+
+.case-study-inner {
+display: grid;
+grid-template-columns: 1fr 1.6fr;
+gap: 5vw;
+align-items: start;
+border: 1px solid var(--line);
+overflow: hidden;
+}
+
+.case-study-sidebar {
+background: var(--ink);
+padding: 3rem 2.5rem;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+min-height: 420px;
+}
+
+.case-label {
+font-size: 0.7rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--gold-light);
+margin-bottom: 1.5rem;
+}
+
+.case-client {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.9rem;
+font-weight: 600;
+color: var(--cream);
+line-height: 1.2;
+margin-bottom: 1rem;
+}
+
+.case-industry-tag {
+display: inline-block;
+font-size: 0.7rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(--gold);
+border: 1px solid rgba(184,147,63,0.4);
+padding: 0.3rem 0.8rem;
+margin-bottom: 2rem;
+}
+
+.case-result-highlight {
+border-top: 1px solid rgba(184,147,63,0.2);
+padding-top: 1.5rem;
+}
+
+.case-result-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 3.5rem;
+font-weight: 700;
+color: var(--gold-light);
+line-height: 1;
+}
+
+.case-result-lbl {
+font-size: 0.78rem;
+color: rgba(247,244,239,0.55);
+letter-spacing: 0.08em;
+margin-top: 0.3rem;
+}
+
+.case-study-content {
+padding: 3rem 2.5rem 3rem 0;
+}
+
+.case-steps {
+display: flex;
+flex-direction: column;
+gap: 2rem;
+margin-top: 1.5rem;
+}
+
+.case-step {
+display: grid;
+grid-template-columns: 80px 1fr;
+gap: 1.5rem;
+align-items: start;
+}
+
+.case-step-label {
+font-size: 0.68rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: var(--gold);
+border: 1px solid var(--line);
+padding: 0.4rem 0.6rem;
+text-align: center;
+line-height: 1.3;
+}
+
+.case-step-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.2rem;
+font-weight: 600;
+color: var(--ink);
+margin-bottom: 0.4rem;
+}
+
+.case-step-text {
+font-size: 0.88rem;
+color: var(--muted);
+line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+.case-study-inner { grid-template-columns: 1fr; }
+.case-study-sidebar { min-height: auto; }
+.case-study-content { padding: 2rem; }
+}
+
+/* ── FAQ ── */
+#faq {
+background: var(--white);
+padding: 7rem 6vw;
+}
+
+.faq-inner {
+display: grid;
+grid-template-columns: 1fr 1.8fr;
+gap: 5vw;
+align-items: start;
+}
+
+.faq-sidebar p {
+font-size: 0.95rem;
+color: var(--muted);
+line-height: 1.75;
+margin-top: 1rem;
+}
+
+.faq-list {
+display: flex;
+flex-direction: column;
+border: 1px solid var(--line);
+}
+
+.faq-item {
+border-bottom: 1px solid var(--line);
+overflow: hidden;
+}
+
+.faq-item:last-child { border-bottom: none; }
+
+.faq-question {
+width: 100%;
+background: none;
+border: none;
+padding: 1.5rem 1.8rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 1rem;
+cursor: pointer;
+text-align: left;
+font-family: 'DM Sans', sans-serif;
+font-size: 0.95rem;
+font-weight: 600;
+color: var(--ink);
+transition: background 0.2s;
+}
+
+.faq-question:hover { background: var(--cream); }
+
+.faq-question.open { background: var(--cream); color: var(--gold); }
+
+.faq-chevron {
+width: 20px;
+height: 20px;
+border: 1px solid var(--line);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.75rem;
+flex-shrink: 0;
+transition: transform 0.3s, background 0.2s;
+color: var(--gold);
+}
+
+.faq-question.open .faq-chevron {
+transform: rotate(45deg);
+background: var(--gold);
+color: var(--white);
+border-color: var(--gold);
+}
+
+.faq-answer {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.4s ease, padding 0.3s ease;
+padding: 0 1.8rem;
+font-size: 0.9rem;
+color: var(--muted);
+line-height: 1.8;
+}
+
+.faq-answer.open {
+max-height: 200px;
+padding: 0 1.8rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+.faq-inner { grid-template-columns: 1fr; }
+}
+
+/* ── WHATSAPP FLOATING BUTTON ── */
+.whatsapp-float {
+position: fixed;
+bottom: 2rem;
+right: 2rem;
+z-index: 999;
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 0.6rem;
+}
+
+.whatsapp-tooltip {
+background: var(--ink);
+color: var(--cream);
+font-size: 0.78rem;
+padding: 0.5rem 1rem;
+white-space: nowrap;
+opacity: 0;
+transform: translateX(10px);
+transition: opacity 0.3s, transform 0.3s;
+pointer-events: none;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+opacity: 1;
+transform: translateX(0);
+}
+
+.whatsapp-btn {
+width: 56px;
+height: 56px;
+background: #25D366;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+transition: transform 0.3s, box-shadow 0.3s;
+animation: wa-pulse 2.5s infinite;
+}
+
+.whatsapp-btn:hover {
+transform: scale(1.1);
+box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+animation: none;
+}
+
+.whatsapp-btn svg {
+width: 28px;
+height: 28px;
+fill: white;
+}
+
+@keyframes wa-pulse {
+0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.4); }
+50% { box-shadow: 0 4px 32px rgba(37,211,102,0.7); }
+}
+
+/* ── DIVIDER ── */
+.gold-divider {
+width: 48px;
+height: 2px;
+background: var(--gold);
+margin: 1.5rem 0 2rem;
+}
+
+/* ── METRICS ── */
+#metrics {
+background: var(--gold);
+padding: 5rem 6vw;
+}
+
+.metrics-top {
+text-align: center;
+margin-bottom: 3.5rem;
+}
+
+.metrics-top .section-label {
+justify-content: center;
+color: rgba(13,13,13,0.6);
+}
+
+.metrics-top .section-label::before { background: rgba(13,13,13,0.4); }
+
+.metrics-top h2 {
+color: var(--ink);
+font-size: clamp(2rem, 3.5vw, 3rem);
+}
+
+.metrics-top h2 em { color: var(--white); }
+
+.metrics-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 1px;
+background: rgba(13,13,13,0.15);
+border: 1px solid rgba(13,13,13,0.15);
+}
+
+.metric-card {
+background: var(--gold);
+padding: 2.5rem 2rem;
+text-align: center;
+position: relative;
+transition: background 0.3s;
+}
+
+.metric-card:hover { background: var(--ink); }
+.metric-card:hover .metric-num,
+.metric-card:hover .metric-suffix,
+.metric-card:hover .metric-label,
+.metric-card:hover .metric-desc { color: var(--cream) !important; }
+.metric-card:hover .metric-desc { color: rgba(247,244,239,0.6) !important; }
+
+.metric-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(3rem, 5vw, 4.5rem);
+font-weight: 700;
+color: var(--ink);
+line-height: 1;
+transition: color 0.3s;
+}
+
+.metric-suffix {
+font-family: 'Cormorant Garamond', serif;
+font-size: 2rem;
+font-weight: 600;
+color: var(--ink);
+transition: color 0.3s;
+}
+
+.metric-label {
+font-size: 0.82rem;
+font-weight: 600;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(--ink);
+margin: 0.6rem 0 0.3rem;
+transition: color 0.3s;
+}
+
+.metric-desc {
+font-size: 0.78rem;
+color: rgba(13,13,13,0.6);
+line-height: 1.5;
+transition: color 0.3s;
+}
+
+@media (max-width: 768px) {
+.metrics-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+.metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* ── INDUSTRIES ── */
+#industries { background: var(--cream); }
+
+.industries-header {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3rem;
+align-items: end;
+margin-bottom: 3.5rem;
+}
+
+.industries-header p {
+font-size: 1rem;
+color: var(--muted);
+line-height: 1.75;
+}
+
+.industries-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 1.5rem;
+}
+
+.industry-card {
+border: 1px solid var(--line);
+padding: 2.2rem 2rem;
+position: relative;
+overflow: hidden;
+transition: border-color 0.3s, transform 0.3s;
+background: var(--white);
+}
+
+.industry-card:hover {
+border-color: var(--gold);
+transform: translateY(-4px);
+}
+
+.industry-card::after {
+content: '';
+position: absolute;
+bottom: 0; left: 0;
+width: 0; height: 2px;
+background: var(--gold);
+transition: width 0.4s ease;
+}
+
+.industry-card:hover::after { width: 100%; }
+
+.industry-icon {
+font-size: 2.2rem;
+margin-bottom: 1.2rem;
+display: block;
+}
+
+.industry-name {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.3rem;
+font-weight: 600;
+color: var(--ink);
+margin-bottom: 0.6rem;
+}
+
+.industry-desc {
+font-size: 0.85rem;
+color: var(--muted);
+line-height: 1.65;
+margin-bottom: 1.2rem;
+}
+
+.industry-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.4rem;
+}
+
+.industry-tags span {
+font-size: 0.68rem;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: var(--gold);
+border: 1px solid var(--line);
+padding: 0.2rem 0.55rem;
+}
+
+@media (max-width: 900px) {
+.industries-grid { grid-template-columns: 1fr 1fr; }
+.industries-header { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 580px) {
+.industries-grid { grid-template-columns: 1fr; }
+}
+
+/* ── PROCESS ── */
+#process {
+background: var(--ink);
+color: var(--cream);
+}
+
+#process .section-label { color: var(--gold-light); }
+#process .section-label::before { background: var(--gold-light); }
+#process h2 { color: var(--cream); }
+#process h2 em { color: var(--gold-light); }
+
+.process-intro {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3rem;
+align-items: end;
+margin-bottom: 4rem;
+}
+
+.process-intro p {
+font-size: 1rem;
+color: rgba(247,244,239,0.65);
+line-height: 1.75;
+}
+
+.process-steps {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+position: relative;
+}
+
+.process-steps::before {
+content: '';
+position: absolute;
+top: 2.6rem;
+left: 12.5%;
+right: 12.5%;
+height: 1px;
+background: linear-gradient(90deg, var(--gold) 0%, rgba(184,147,63,0.2) 100%);
+z-index: 0;
+}
+
+.process-step {
+padding: 0 1.5rem 0 0;
+position: relative;
+z-index: 1;
+}
+
+.step-dot-wrap {
+display: flex;
+align-items: center;
+margin-bottom: 1.8rem;
+}
+
+.step-dot {
+width: 52px;
+height: 52px;
+border-radius: 50%;
+background: var(--ink);
+border: 1px solid var(--gold);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: background 0.3s;
+}
+
+.process-step:hover .step-dot {
+background: var(--gold);
+}
+
+.step-dot-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.3rem;
+font-weight: 700;
+color: var(--gold-light);
+transition: color 0.3s;
+}
+
+.process-step:hover .step-dot-num { color: var(--white); }
+
+.step-phase {
+font-size: 0.68rem;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 0.5rem;
+}
+
+.step-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.5rem;
+font-weight: 600;
+color: var(--cream);
+margin-bottom: 0.8rem;
+line-height: 1.2;
+}
+
+.step-desc {
+font-size: 0.85rem;
+color: rgba(247,244,239,0.6);
+line-height: 1.7;
+}
+
+.step-deliverable {
+margin-top: 1.2rem;
+display: flex;
+align-items: flex-start;
+gap: 0.5rem;
+font-size: 0.78rem;
+color: var(--gold-light);
+}
+
+.step-deliverable::before {
+content: '→';
+flex-shrink: 0;
+margin-top: 1px;
+}
+
+@media (max-width: 900px) {
+.process-steps {
+grid-template-columns: 1fr 1fr;
+gap: 2.5rem;
+}
+.process-steps::before { display: none; }
+.process-intro { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 580px) {
+.process-steps { grid-template-columns: 1fr; }
+}
+```
+
+</style>
 </head>
-
 <body>
 
-    <!-- NAV -->
+<!-- NAV -->
 
-    <nav>
-        <a class="nav-logo" href="#home">Egodia<span>.</span></a>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#testimonials">Clients</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <a class="nav-cta" href="#contact">Get in Touch</a>
-        <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#about" onclick="toggleMenu()">About</a>
-        <a href="#services" onclick="toggleMenu()">Services</a>
-        <a href="#testimonials" onclick="toggleMenu()">Clients</a>
-        <a href="#contact" onclick="toggleMenu()">Contact</a>
-    </div>
+<nav>
+<a class="nav-logo" href="#home">Egodia<span>.</span></a>
+<ul class="nav-links">
+<li><a href="#about">About</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#testimonials">Clients</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<a class="nav-cta" href="#contact">Get in Touch</a>
+<button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="#about" onclick="toggleMenu()">About</a>
+<a href="#services" onclick="toggleMenu()">Services</a>
+<a href="#testimonials" onclick="toggleMenu()">Clients</a>
+<a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
 
-    <!-- HERO -->
+<!-- HERO -->
 
-    <section id="home">
-        <div class="hero-left">
-            <div class="hero-eyebrow reveal">Strategic Advisory &amp; Consulting</div>
-            <h1 class="reveal reveal-delay-1">
-                Elevate Your<br><em>Business</em><br>Potential
-            </h1>
-            <p class="hero-sub reveal reveal-delay-2">
-                Egodia Consulting LLC partners with organizations to unlock growth, align strategy, and deliver results
-                that last. We bring expertise, clarity, and precision to every engagement.
-            </p>
-            <div class="hero-actions reveal reveal-delay-3">
-                <a href="#services" class="btn-primary">Explore Services</a>
-                <a href="#contact" class="btn-secondary">Talk to Us</a>
-            </div>
-        </div>
-        <div class="hero-right">
-            <div class="hero-graphic">
-                <div class="hero-monogram">EC</div>
-            </div>
-            <div class="hero-badge">
-                <div class="hero-badge-num">10+</div>
-                <div class="hero-badge-label">Years of Impact</div>
-            </div>
-        </div>
-    </section>
+<section id="home">
+<div class="hero-left">
+<div class="hero-eyebrow reveal">Strategic Advisory &amp; Consulting</div>
+<h1 class="reveal reveal-delay-1">
+Elevate Your<br><em>Business</em><br>Potential
+</h1>
+<p class="hero-slogan reveal reveal-delay-2">We Don't Just Advise. We Deliver.</p>
+<p class="hero-sub reveal reveal-delay-3">
+Egodia Consulting LLC partners with organizations to unlock growth, align strategy, and deliver results that last. We bring expertise, clarity, and precision to every engagement.
+</p>
+<div class="hero-actions reveal reveal-delay-4">
+<a href="#services" class="btn-primary">Explore Services</a>
+<a href="#contact" class="btn-secondary">Talk to Us</a>
+</div>
+</div>
+<div class="hero-right">
+<div class="hero-graphic">
+<div class="hero-monogram">EC</div>
+</div>
+<div class="hero-badge">
+<div class="hero-badge-num">10+</div>
+<div class="hero-badge-label">Years of Impact</div>
+</div>
+</div>
+</section>
 
-    <!-- TICKER -->
+<!-- TICKER -->
 
-    <div class="ticker-wrap">
-        <div class="ticker-track">
-            <div class="ticker-item">Business Strategy</div>
-            <div class="ticker-item">Technology Consulting</div>
-            <div class="ticker-item">Financial Advisory</div>
-            <div class="ticker-item">HR & Organizational Development</div>
-            <div class="ticker-item">Growth Planning</div>
-            <div class="ticker-item">Risk Management</div>
-            <div class="ticker-item">Process Optimization</div>
-            <div class="ticker-item">Leadership Coaching</div>
-            <!-- duplicate for seamless loop -->
-            <div class="ticker-item">Business Strategy</div>
-            <div class="ticker-item">Technology Consulting</div>
-            <div class="ticker-item">Financial Advisory</div>
-            <div class="ticker-item">HR & Organizational Development</div>
-            <div class="ticker-item">Growth Planning</div>
-            <div class="ticker-item">Risk Management</div>
-            <div class="ticker-item">Process Optimization</div>
-            <div class="ticker-item">Leadership Coaching</div>
-        </div>
-    </div>
+<div class="ticker-wrap">
+<div class="ticker-track">
+<div class="ticker-item">Business Strategy</div>
+<div class="ticker-item">Technology Consulting</div>
+<div class="ticker-item">Financial Advisory</div>
+<div class="ticker-item">HR & Organizational Development</div>
+<div class="ticker-item">Growth Planning</div>
+<div class="ticker-item">Risk Management</div>
+<div class="ticker-item">Process Optimization</div>
+<div class="ticker-item">Leadership Coaching</div>
+<!-- duplicate for seamless loop -->
+<div class="ticker-item">Business Strategy</div>
+<div class="ticker-item">Technology Consulting</div>
+<div class="ticker-item">Financial Advisory</div>
+<div class="ticker-item">HR & Organizational Development</div>
+<div class="ticker-item">Growth Planning</div>
+<div class="ticker-item">Risk Management</div>
+<div class="ticker-item">Process Optimization</div>
+<div class="ticker-item">Leadership Coaching</div>
+</div>
+</div>
 
-    <!-- ABOUT -->
+<!-- ABOUT -->
 
-    <section id="about">
-        <div class="about-visual reveal">
-            <div class="about-img-frame">
-                <div class="about-inner-text">
-                    <div class="big-letter">EC</div>
-                </div>
-            </div>
-            <div class="about-accent-box">
-                <div class="about-accent-num">100%</div>
-                <div class="about-accent-lbl">Client<br>Focused</div>
-            </div>
-        </div>
-        <div class="about-content">
-            <div class="section-label reveal">Who We Are</div>
-            <h2 class="reveal reveal-delay-1">Built on Trust.<br><em>Driven by Results.</em></h2>
-            <div class="gold-divider reveal reveal-delay-2"></div>
-            <p class="reveal reveal-delay-2">
-                Egodia Consulting LLC is a premier advisory firm dedicated to empowering businesses to achieve
-                sustainable growth and operational excellence. We combine deep industry knowledge with a data-driven,
-                people-first approach.
-            </p>
-            <p class="reveal reveal-delay-3">
-                From startups navigating their first growth phase to established enterprises undergoing transformation,
-                we tailor every engagement to your unique context, goals, and culture.
-            </p>
-            <div class="about-pillars">
-                <div class="pillar reveal reveal-delay-1">
-                    <div class="pillar-icon">🎯</div>
-                    <div class="pillar-title">Precision</div>
-                    <div class="pillar-desc">Sharp analysis, clear recommendations, measurable outcomes.</div>
-                </div>
-                <div class="pillar reveal reveal-delay-2">
-                    <div class="pillar-icon">🤝</div>
-                    <div class="pillar-title">Partnership</div>
-                    <div class="pillar-desc">We work beside you, not just for you, every step of the way.</div>
-                </div>
-                <div class="pillar reveal reveal-delay-3">
-                    <div class="pillar-icon">💡</div>
-                    <div class="pillar-title">Innovation</div>
-                    <div class="pillar-desc">Fresh perspectives and modern frameworks for today's challenges.</div>
-                </div>
-                <div class="pillar reveal reveal-delay-4">
-                    <div class="pillar-icon">📈</div>
-                    <div class="pillar-title">Impact</div>
-                    <div class="pillar-desc">Every engagement is measured by tangible, lasting results.</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="about">
+<div class="about-visual reveal">
+<div class="about-img-frame">
+<div class="about-inner-text">
+<div class="big-letter">EC</div>
+</div>
+</div>
+<div class="about-accent-box">
+<div class="about-accent-num">100%</div>
+<div class="about-accent-lbl">Client<br>Focused</div>
+</div>
+</div>
+<div class="about-content">
+<div class="section-label reveal">Who We Are</div>
+<h2 class="reveal reveal-delay-1">Built on Trust.<br><em>Driven by Results.</em></h2>
+<div class="gold-divider reveal reveal-delay-2"></div>
+<p class="reveal reveal-delay-2">
+Egodia Consulting LLC is a premier advisory firm dedicated to empowering businesses to achieve sustainable growth and operational excellence. We combine deep industry knowledge with a data-driven, people-first approach.
+</p>
+<p class="reveal reveal-delay-3">
+From startups navigating their first growth phase to established enterprises undergoing transformation, we tailor every engagement to your unique context, goals, and culture.
+</p>
+<div class="about-pillars">
+<div class="pillar reveal reveal-delay-1">
+<div class="pillar-icon">🎯</div>
+<div class="pillar-title">Precision</div>
+<div class="pillar-desc">Sharp analysis, clear recommendations, measurable outcomes.</div>
+</div>
+<div class="pillar reveal reveal-delay-2">
+<div class="pillar-icon">🤝</div>
+<div class="pillar-title">Partnership</div>
+<div class="pillar-desc">We work beside you, not just for you, every step of the way.</div>
+</div>
+<div class="pillar reveal reveal-delay-3">
+<div class="pillar-icon">💡</div>
+<div class="pillar-title">Innovation</div>
+<div class="pillar-desc">Fresh perspectives and modern frameworks for today's challenges.</div>
+</div>
+<div class="pillar reveal reveal-delay-4">
+<div class="pillar-icon">📈</div>
+<div class="pillar-title">Impact</div>
+<div class="pillar-desc">Every engagement is measured by tangible, lasting results.</div>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- SERVICES -->
+<!-- SERVICES -->
 
-    <section id="services">
-        <div class="services-header">
-            <div>
-                <div class="section-label reveal">What We Do</div>
-                <h2 class="reveal reveal-delay-1">Comprehensive<br><em>Advisory Services</em></h2>
-            </div>
-            <p class="reveal reveal-delay-2">
-                Our suite of consulting services is designed to address the most critical challenges businesses face
-                today — from strategy and technology to talent and financial health.
-            </p>
-        </div>
-        <div class="services-grid">
-            <div class="service-card reveal">
-                <div class="service-num">01</div>
-                <div class="service-title">Business Strategy & Management</div>
-                <div class="service-desc">From competitive analysis to go-to-market planning, we help you build and
-                    execute winning strategies that scale.</div>
-                <div class="service-tags">
-                    <span>Market Entry</span><span>Competitive Analysis</span><span>Growth Planning</span>
-                </div>
-            </div>
-            <div class="service-card reveal reveal-delay-1">
-                <div class="service-num">02</div>
-                <div class="service-title">Technology & IT Consulting</div>
-                <div class="service-desc">We align your technology investments with your business objectives — from
-                    digital transformation to systems architecture.</div>
-                <div class="service-tags">
-                    <span>Digital Transformation</span><span>IT Strategy</span><span>Systems Integration</span>
-                </div>
-            </div>
-            <div class="service-card reveal reveal-delay-2">
-                <div class="service-num">03</div>
-                <div class="service-title">Financial & Accounting Advisory</div>
-                <div class="service-desc">Sharpen your financial clarity with expert modeling, forecasting, and advisory
-                    that drives confident decision-making.</div>
-                <div class="service-tags">
-                    <span>Financial Modeling</span><span>Forecasting</span><span>Cost Optimization</span>
-                </div>
-            </div>
-            <div class="service-card reveal reveal-delay-1">
-                <div class="service-num">04</div>
-                <div class="service-title">HR & Organizational Development</div>
-                <div class="service-desc">Build high-performing teams, refine your culture, and develop leaders who
-                    inspire and sustain growth.</div>
-                <div class="service-tags">
-                    <span>Talent Strategy</span><span>Culture Design</span><span>Leadership Dev</span>
-                </div>
-            </div>
-            <div class="service-card reveal reveal-delay-2">
-                <div class="service-num">05</div>
-                <div class="service-title">Risk & Compliance Management</div>
-                <div class="service-desc">Identify, assess, and mitigate risks before they impact your business. We help
-                    you operate with confidence.</div>
-                <div class="service-tags">
-                    <span>Risk Assessment</span><span>Regulatory Compliance</span><span>Audit Prep</span>
-                </div>
-            </div>
-            <div class="service-card reveal reveal-delay-3">
-                <div class="service-num">06</div>
-                <div class="service-title">Process Optimization</div>
-                <div class="service-desc">Streamline operations, reduce waste, and improve efficiency through
-                    data-driven process redesign and automation.</div>
-                <div class="service-tags">
-                    <span>Lean Operations</span><span>Automation</span><span>Workflow Design</span>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="services">
+<div class="services-header">
+<div>
+<div class="section-label reveal">What We Do</div>
+<h2 class="reveal reveal-delay-1">Comprehensive<br><em>Advisory Services</em></h2>
+</div>
+<p class="reveal reveal-delay-2">
+Our suite of consulting services is designed to address the most critical challenges businesses face today — from strategy and technology to talent and financial health.
+</p>
+</div>
+<div class="services-grid">
+<div class="service-card reveal">
+<div class="service-num">01</div>
+<div class="service-title">Business Strategy & Management</div>
+<div class="service-desc">From competitive analysis to go-to-market planning, we help you build and execute winning strategies that scale.</div>
+<div class="service-tags">
+<span>Market Entry</span><span>Competitive Analysis</span><span>Growth Planning</span>
+</div>
+</div>
+<div class="service-card reveal reveal-delay-1">
+<div class="service-num">02</div>
+<div class="service-title">Technology & IT Consulting</div>
+<div class="service-desc">We align your technology investments with your business objectives — from digital transformation to systems architecture.</div>
+<div class="service-tags">
+<span>Digital Transformation</span><span>IT Strategy</span><span>Systems Integration</span>
+</div>
+</div>
+<div class="service-card reveal reveal-delay-2">
+<div class="service-num">03</div>
+<div class="service-title">Financial & Accounting Advisory</div>
+<div class="service-desc">Sharpen your financial clarity with expert modeling, forecasting, and advisory that drives confident decision-making.</div>
+<div class="service-tags">
+<span>Financial Modeling</span><span>Forecasting</span><span>Cost Optimization</span>
+</div>
+</div>
+<div class="service-card reveal reveal-delay-1">
+<div class="service-num">04</div>
+<div class="service-title">HR & Organizational Development</div>
+<div class="service-desc">Build high-performing teams, refine your culture, and develop leaders who inspire and sustain growth.</div>
+<div class="service-tags">
+<span>Talent Strategy</span><span>Culture Design</span><span>Leadership Dev</span>
+</div>
+</div>
+<div class="service-card reveal reveal-delay-2">
+<div class="service-num">05</div>
+<div class="service-title">Risk & Compliance Management</div>
+<div class="service-desc">Identify, assess, and mitigate risks before they impact your business. We help you operate with confidence.</div>
+<div class="service-tags">
+<span>Risk Assessment</span><span>Regulatory Compliance</span><span>Audit Prep</span>
+</div>
+</div>
+<div class="service-card reveal reveal-delay-3">
+<div class="service-num">06</div>
+<div class="service-title">Process Optimization</div>
+<div class="service-desc">Streamline operations, reduce waste, and improve efficiency through data-driven process redesign and automation.</div>
+<div class="service-tags">
+<span>Lean Operations</span><span>Automation</span><span>Workflow Design</span>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- TESTIMONIALS -->
+<!-- METRICS -->
 
-    <section id="testimonials">
-        <div class="section-label reveal">Client Voices</div>
-        <h2 class="reveal reveal-delay-1">What Our<br><em>Clients Say</em></h2>
-        <div class="testimonials-grid">
-            <div class="testi-card reveal reveal-delay-1">
-                <div class="testi-quote-mark">"</div>
-                <p class="testi-text">Egodia Consulting transformed how we approach strategy. Their team brought clarity
-                    and structure to a complex situation — the results spoke for themselves within the first quarter.
-                </p>
-                <div class="testi-author">
-                    <div class="testi-avatar">JM</div>
-                    <div>
-                        <div class="testi-name">James Mitchell</div>
-                        <div class="testi-role">CEO, Apex Ventures</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testi-card reveal reveal-delay-2">
-                <div class="testi-quote-mark">"</div>
-                <p class="testi-text">Their financial advisory team helped us identify cost savings we had completely
-                    overlooked. Highly analytical, deeply professional, and genuinely invested in our success.</p>
-                <div class="testi-author">
-                    <div class="testi-avatar">SR</div>
-                    <div>
-                        <div class="testi-name">Sandra Reyes</div>
-                        <div class="testi-role">CFO, Meridian Group</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testi-card reveal reveal-delay-3">
-                <div class="testi-quote-mark">"</div>
-                <p class="testi-text">From our IT overhaul to team restructuring, Egodia guided us through a full
-                    organizational transformation. They're not just consultants — they're true partners.</p>
-                <div class="testi-author">
-                    <div class="testi-avatar">DK</div>
-                    <div>
-                        <div class="testi-name">David Kim</div>
-                        <div class="testi-role">COO, NovaTech Solutions</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="metrics">
+<div class="metrics-top">
+<div class="section-label reveal">By The Numbers</div>
+<h2 class="reveal reveal-delay-1">Real Results.<br><em>Proven Impact.</em></h2>
+</div>
+<div class="metrics-grid">
+<div class="metric-card reveal">
+<div>
+<span class="metric-num" data-target="47">0</span><span class="metric-suffix">+</span>
+</div>
+<div class="metric-label">Clients Served</div>
+<div class="metric-desc">Businesses guided across industries since founding</div>
+</div>
+<div class="metric-card reveal reveal-delay-1">
+<div>
+<span class="metric-num" data-target="91">0</span><span class="metric-suffix">%</span>
+</div>
+<div class="metric-label">Client Retention</div>
+<div class="metric-desc">Of clients return for ongoing or follow-on engagements</div>
+</div>
+<div class="metric-card reveal reveal-delay-2">
+<div>
+<span class="metric-num" data-target="3">0</span><span class="metric-suffix">x</span>
+</div>
+<div class="metric-label">Avg. ROI Delivered</div>
+<div class="metric-desc">Average return on consulting investment across engagements</div>
+</div>
+<div class="metric-card reveal reveal-delay-3">
+<div>
+<span class="metric-num" data-target="28">0</span><span class="metric-suffix">%</span>
+</div>
+<div class="metric-label">Avg. Cost Reduction</div>
+<div class="metric-desc">Average operational savings identified for client organizations</div>
+</div>
+</div>
+</section>
 
-    <!-- CONTACT -->
+<!-- INDUSTRIES -->
 
-    <section id="contact">
-        <div class="contact-info">
-            <div class="section-label reveal">Let's Talk</div>
-            <h2 class="reveal reveal-delay-1">Ready to <em>Transform</em><br>Your Business?</h2>
-            <div class="gold-divider reveal reveal-delay-2"></div>
-            <p class="reveal reveal-delay-2">
-                Whether you're exploring a new direction, navigating a challenge, or planning your next big move, we'd
-                love to hear from you. Reach out and let's start the conversation.
-            </p>
-            <div class="contact-details">
-                <div class="contact-item reveal reveal-delay-2">
-                    <div class="contact-icon">📧</div>
-                    <div>
-                        <div class="contact-item-label">Email</div>
-                        <div class="contact-item-val">info@egodiaconsulting.com</div>
-                    </div>
-                </div>
-                <div class="contact-item reveal reveal-delay-3">
-                    <div class="contact-icon">📞</div>
-                    <div>
-                        <div class="contact-item-label">Phone</div>
-                        <div class="contact-item-val">+1 (555) 800-0000</div>
-                    </div>
-                </div>
-                <div class="contact-item reveal reveal-delay-4">
-                    <div class="contact-icon">📍</div>
-                    <div>
-                        <div class="contact-item-label">Location</div>
-                        <div class="contact-item-val">United States of America</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="contact-form-wrap reveal reveal-delay-2">
-            <div class="contact-form" id="contactForm">
-                <div class="form-row">
-                    <div class="field">
-                        <label for="fname">First Name</label>
-                        <input type="text" id="fname" placeholder="John" />
-                    </div>
-                    <div class="field">
-                        <label for="lname">Last Name</label>
-                        <input type="text" id="lname" placeholder="Smith" />
-                    </div>
-                </div>
-                <div class="field">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="john@company.com" />
-                </div>
-                <div class="field">
-                    <label for="company">Company</label>
-                    <input type="text" id="company" placeholder="Your Company Name" />
-                </div>
-                <div class="field">
-                    <label for="service">Service of Interest</label>
-                    <select id="service">
-                        <option value="">Select a service...</option>
-                        <option>Business Strategy & Management</option>
-                        <option>Technology & IT Consulting</option>
-                        <option>Financial & Accounting Advisory</option>
-                        <option>HR & Organizational Development</option>
-                        <option>Risk & Compliance Management</option>
-                        <option>Process Optimization</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label for="message">Message</label>
-                    <textarea id="message" rows="4" placeholder="Tell us about your goals or challenges..."></textarea>
-                </div>
-                <button class="form-submit" onclick="submitForm()">Send Message →</button>
-                <div class="form-success" id="formSuccess">
-                    ✓ Thank you! We'll be in touch within one business day.
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="industries">
+<div class="industries-header">
+<div>
+<div class="section-label reveal">Who We Serve</div>
+<h2 class="reveal reveal-delay-1">Industries We<br><em>Know Deeply</em></h2>
+</div>
+<p class="reveal reveal-delay-2">
+Our consultants bring hands-on experience across a range of sectors — so we speak your language, understand your pressures, and deliver advice grounded in your reality.
+</p>
+</div>
+<div class="industries-grid">
+<div class="industry-card reveal">
+<span class="industry-icon">🏛️</span>
+<div class="industry-name">Government & Defense</div>
+<div class="industry-desc">Supporting federal agencies, military organizations, and defense contractors with compliance, HR, and operational strategy.</div>
+<div class="industry-tags"><span>Federal Compliance</span><span>HR Policy</span><span>Operations</span></div>
+</div>
+<div class="industry-card reveal reveal-delay-1">
+<span class="industry-icon">🏥</span>
+<div class="industry-name">Healthcare & Nonprofits</div>
+<div class="industry-desc">Helping mission-driven organizations optimize resources, build sustainable programs, and improve patient or community outcomes.</div>
+<div class="industry-tags"><span>Program Design</span><span>Grant Strategy</span><span>Workforce Dev</span></div>
+</div>
+<div class="industry-card reveal reveal-delay-2">
+<span class="industry-icon">💼</span>
+<div class="industry-name">Small & Mid-Size Business</div>
+<div class="industry-desc">From launch to scale, we equip growing businesses with the strategy, systems, and talent infrastructure to compete and win.</div>
+<div class="industry-tags"><span>Growth Planning</span><span>HR Setup</span><span>Process Design</span></div>
+</div>
+<div class="industry-card reveal reveal-delay-1">
+<span class="industry-icon">💳</span>
+<div class="industry-name">Financial Services</div>
+<div class="industry-desc">Advising banks, credit unions, and fintech firms on risk management, regulatory compliance, and organizational efficiency.</div>
+<div class="industry-tags"><span>Risk & Compliance</span><span>Audit Prep</span><span>Org Design</span></div>
+</div>
+<div class="industry-card reveal reveal-delay-2">
+<span class="industry-icon">🛒</span>
+<div class="industry-name">Retail & Automotive</div>
+<div class="industry-desc">Drawing on direct industry experience to drive performance, talent retention, and customer-facing process improvement.</div>
+<div class="industry-tags"><span>Sales Operations</span><span>Retention Strategy</span><span>CX</span></div>
+</div>
+<div class="industry-card reveal reveal-delay-3">
+<span class="industry-icon">🎓</span>
+<div class="industry-name">Education & Training</div>
+<div class="industry-desc">Partnering with educational institutions and training providers to develop leadership pipelines and organizational capacity.</div>
+<div class="industry-tags"><span>Leadership Dev</span><span>L&D Strategy</span><span>Culture</span></div>
+</div>
+</div>
+</section>
 
-    <!-- FOOTER -->
+<!-- PROCESS -->
 
-    <footer>
-        <div class="footer-logo">Egodia<span>.</span> Consulting LLC</div>
-        <p>© 2025 Egodia Consulting LLC. All rights reserved.</p>
-        <ul class="footer-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </footer>
+<section id="process">
+<div class="process-intro">
+<div>
+<div class="section-label reveal">How We Work</div>
+<h2 class="reveal reveal-delay-1">A Clear Path to<br><em>Your Outcomes</em></h2>
+</div>
+<p class="reveal reveal-delay-2">
+Every engagement follows a proven four-phase framework — designed to eliminate ambiguity, keep you informed at every step, and ensure the work we deliver actually moves the needle.
+</p>
+</div>
+<div class="process-steps">
+<div class="process-step reveal">
+<div class="step-dot-wrap">
+<div class="step-dot"><span class="step-dot-num">01</span></div>
+</div>
+<div class="step-phase">Phase One</div>
+<div class="step-title">Discover</div>
+<div class="step-desc">We invest time to deeply understand your organization — your goals, pain points, culture, and competitive context — before forming any recommendations.</div>
+<div class="step-deliverable">Stakeholder interviews, situational audit, and discovery report</div>
+</div>
+<div class="process-step reveal reveal-delay-1">
+<div class="step-dot-wrap">
+<div class="step-dot"><span class="step-dot-num">02</span></div>
+</div>
+<div class="step-phase">Phase Two</div>
+<div class="step-title">Diagnose</div>
+<div class="step-desc">We analyze findings, identify root causes, and map the gap between where you are and where you need to be — with data to back every insight.</div>
+<div class="step-deliverable">Diagnostic assessment, gap analysis, and prioritization framework</div>
+</div>
+<div class="process-step reveal reveal-delay-2">
+<div class="step-dot-wrap">
+<div class="step-dot"><span class="step-dot-num">03</span></div>
+</div>
+<div class="step-phase">Phase Three</div>
+<div class="step-title">Design</div>
+<div class="step-desc">We co-create a tailored strategy and implementation roadmap with your team — practical, sequenced, and built for your specific capacity and timeline.</div>
+<div class="step-deliverable">Strategic roadmap, solution design, and implementation plan</div>
+</div>
+<div class="process-step reveal reveal-delay-3">
+<div class="step-dot-wrap">
+<div class="step-dot"><span class="step-dot-num">04</span></div>
+</div>
+<div class="step-phase">Phase Four</div>
+<div class="step-title">Deliver</div>
+<div class="step-desc">We execute alongside your team, track progress against measurable milestones, and ensure the work sticks — leaving you stronger than when we arrived.</div>
+<div class="step-deliverable">Implementation support, KPI tracking, and post-engagement review</div>
+</div>
+</div>
+</section>
 
-    <script>
-        // Mobile menu
-        function toggleMenu() {
-            document.getElementById('mobileMenu').classList.toggle('open');
-        }
+<!-- TESTIMONIALS -->
 
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.12 });
-        reveals.forEach(r => observer.observe(r));
+<section id="testimonials">
+<div class="section-label reveal">Client Voices</div>
+<h2 class="reveal reveal-delay-1">What Our<br><em>Clients Say</em></h2>
+<div class="testimonials-grid">
+<div class="testi-card reveal reveal-delay-1">
+<div class="testi-quote-mark">"</div>
+<p class="testi-text">Egodia Consulting transformed how we approach strategy. Their team brought clarity and structure to a complex situation — the results spoke for themselves within the first quarter.</p>
+<div class="testi-author">
+<div class="testi-avatar">JM</div>
+<div>
+<div class="testi-name">James Mitchell</div>
+<div class="testi-role">CEO, Apex Ventures</div>
+</div>
+</div>
+</div>
+<div class="testi-card reveal reveal-delay-2">
+<div class="testi-quote-mark">"</div>
+<p class="testi-text">Their financial advisory team helped us identify cost savings we had completely overlooked. Highly analytical, deeply professional, and genuinely invested in our success.</p>
+<div class="testi-author">
+<div class="testi-avatar">SR</div>
+<div>
+<div class="testi-name">Sandra Reyes</div>
+<div class="testi-role">CFO, Meridian Group</div>
+</div>
+</div>
+</div>
+<div class="testi-card reveal reveal-delay-3">
+<div class="testi-quote-mark">"</div>
+<p class="testi-text">From our IT overhaul to team restructuring, Egodia guided us through a full organizational transformation. They're not just consultants — they're true partners.</p>
+<div class="testi-author">
+<div class="testi-avatar">DK</div>
+<div>
+<div class="testi-name">David Kim</div>
+<div class="testi-role">COO, NovaTech Solutions</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-        // Trigger hero reveals on load
-        window.addEventListener('load', () => {
-            document.querySelectorAll('#home .reveal').forEach(el => {
-                el.classList.add('visible');
-            });
-        });
+<!-- CONTACT -->
 
-        // Nav shadow on scroll
-        window.addEventListener('scroll', () => {
-            document.querySelector('nav').style.boxShadow =
-                window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
-        });
+<section id="contact">
+<div class="contact-info">
+<div class="section-label reveal">Let's Talk</div>
+<h2 class="reveal reveal-delay-1">Ready to <em>Transform</em><br>Your Business?</h2>
+<div class="gold-divider reveal reveal-delay-2"></div>
+<p class="reveal reveal-delay-2">
+Whether you're exploring a new direction, navigating a challenge, or planning your next big move, we'd love to hear from you. Reach out and let's start the conversation.
+</p>
+<div class="contact-details">
+<div class="contact-item reveal reveal-delay-2">
+<div class="contact-icon">📧</div>
+<div>
+<div class="contact-item-label">Email</div>
+<div class="contact-item-val">info@egodiaconsulting.com</div>
+</div>
+</div>
+<div class="contact-item reveal reveal-delay-3">
+<div class="contact-icon">📞</div>
+<div>
+<div class="contact-item-label">Phone</div>
+<div class="contact-item-val">+1 (480) 859-0500</div>
+</div>
+</div>
+<div class="contact-item reveal reveal-delay-4">
+<div class="contact-icon">📍</div>
+<div>
+<div class="contact-item-label">Location</div>
+<div class="contact-item-val">United States of America</div>
+</div>
+</div>
+</div>
+</div>
+<div class="contact-form-wrap reveal reveal-delay-2">
+<div class="contact-form" id="contactForm">
+<div class="form-row">
+<div class="field">
+<label for="fname">First Name</label>
+<input type="text" id="fname" placeholder="John" />
+</div>
+<div class="field">
+<label for="lname">Last Name</label>
+<input type="text" id="lname" placeholder="Smith" />
+</div>
+</div>
+<div class="field">
+<label for="email">Email Address</label>
+<input type="email" id="email" placeholder="john@company.com" />
+</div>
+<div class="field">
+<label for="company">Company</label>
+<input type="text" id="company" placeholder="Your Company Name" />
+</div>
+<div class="field">
+<label for="service">Service of Interest</label>
+<select id="service">
+<option value="">Select a service...</option>
+<option>Business Strategy & Management</option>
+<option>Technology & IT Consulting</option>
+<option>Financial & Accounting Advisory</option>
+<option>HR & Organizational Development</option>
+<option>Risk & Compliance Management</option>
+<option>Process Optimization</option>
+</select>
+</div>
+<div class="field">
+<label for="message">Message</label>
+<textarea id="message" rows="4" placeholder="Tell us about your goals or challenges..."></textarea>
+</div>
+<button class="form-submit" onclick="submitForm()">Send Message →</button>
+<div class="form-success" id="formSuccess">
+✓ Thank you! We'll be in touch within one business day.
+</div>
+</div>
+</div>
+</section>
 
-        // Form submit
-        function submitForm() {
-            const email = document.getElementById('email').value;
-            const fname = document.getElementById('fname').value;
-            if (!fname || !email) {
-                alert('Please fill in at least your name and email.');
-                return;
-            }
-            document.getElementById('formSuccess').style.display = 'block';
-            document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea')
-                .forEach(el => el.value = '');
-            setTimeout(() => {
-                document.getElementById('formSuccess').style.display = 'none';
-            }, 5000);
-        }
-    </script>
+<!-- CREDENTIALS BAR -->
+
+<section id="credentials">
+<div class="creds-header">
+<div class="section-label reveal">Our Credentials</div>
+<h2 class="reveal reveal-delay-1">Qualified. <em>Verified. Trusted.</em></h2>
+</div>
+<div class="creds-grid">
+<div class="cred-badge reveal">
+<span class="cred-icon">⚖️</span>
+<div class="cred-title">LL.M.</div>
+<div class="cred-sub">Master of Laws — Advanced Legal Expertise</div>
+</div>
+<div class="cred-badge reveal reveal-delay-1">
+<span class="cred-icon">🎓</span>
+<div class="cred-title">Leadership & Decision-Making</div>
+<div class="cred-sub">Advanced Studies in Executive Leadership</div>
+</div>
+<div class="cred-badge reveal reveal-delay-2">
+<span class="cred-icon">🛡️</span>
+<div class="cred-title">Secret Clearance</div>
+<div class="cred-sub">U.S. Government Security Clearance</div>
+</div>
+<div class="cred-badge reveal reveal-delay-3">
+<span class="cred-icon">👥</span>
+<div class="cred-title">HR Generalist & Specialist</div>
+<div class="cred-sub">Human Resources Strategy, Policy & Operations</div>
+</div>
+<div class="cred-badge reveal reveal-delay-4">
+<span class="cred-icon">💻</span>
+<div class="cred-title">Information Systems Certified</div>
+<div class="cred-sub">Information Systems Audit & Control</div>
+</div>
+</div>
+</section>
+
+<!-- BOOK A CALL BANNER -->
+
+<section id="book-call">
+<div class="book-call-left reveal">
+<h2>Schedule a <em>Free 30-Min</em><br>Strategy Call</h2>
+<p>No pitch. No pressure. Just a focused conversation about where your organization is and where you want it to go. Walk away with clarity — guaranteed.</p>
+</div>
+<div class="book-call-right reveal reveal-delay-2">
+<a href="https://calendly.com" target="_blank" rel="noopener" class="btn-book">📅 Book Your Free Call</a>
+<span class="book-note">Availability Mon – Fri · Response within 24 hrs</span>
+</div>
+</section>
+
+<!-- CASE STUDY -->
+
+<section id="case-study">
+<div class="section-label reveal">Featured Case Study</div>
+<h2 class="reveal reveal-delay-1">From Challenge<br>to <em>Measurable Win</em></h2>
+<br>
+<div class="case-study-inner reveal reveal-delay-2">
+<div class="case-study-sidebar">
+<div>
+<div class="case-label">Client Engagement</div>
+<div class="case-client">Regional Services Firm</div>
+<div class="case-industry-tag">HR & Operations</div>
+</div>
+<div class="case-result-highlight">
+<div class="case-result-num">31%</div>
+<div class="case-result-lbl">Reduction in HR operational costs within 6 months</div>
+</div>
+</div>
+<div class="case-study-content">
+<div class="case-steps">
+<div class="case-step">
+<div class="case-step-label">Challenge</div>
+<div>
+<div class="case-step-title">Fragmented HR Processes & High Turnover</div>
+<div class="case-step-text">A 120-person regional services firm was experiencing 38% annual staff turnover, inconsistent onboarding, and no documented HR policy framework — costing approximately $280K per year in rehiring and productivity loss.</div>
+</div>
+</div>
+<div class="case-step">
+<div class="case-step-label">Approach</div>
+<div>
+<div class="case-step-title">Structured Audit, Policy Redesign & Manager Training</div>
+<div class="case-step-text">Egodia conducted a full HR audit, redesigned onboarding and offboarding workflows, built a compliant policy handbook, and delivered a 3-session leadership training program targeting frontline managers.</div>
+</div>
+</div>
+<div class="case-step">
+<div class="case-step-label">Result</div>
+<div>
+<div class="case-step-title">31% Cost Reduction & Turnover Down to 19%</div>
+<div class="case-step-text">Within two quarters, HR operational costs dropped by 31%, turnover fell nearly in half, and employee satisfaction scores improved by 24 points — delivering an estimated $86K in first-year savings.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+
+<section id="faq">
+<div class="faq-inner">
+<div class="faq-sidebar">
+<div class="section-label reveal">FAQ</div>
+<h2 class="reveal reveal-delay-1">Questions<br><em>Answered</em></h2>
+<p class="reveal reveal-delay-2">Everything you need to know before your first conversation with us. Don't see your question? Call or email us directly.</p>
+</div>
+<div class="faq-list reveal reveal-delay-2">
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+How long does a typical engagement take?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">Engagements range from 4-week diagnostic sprints to 6-month full implementation projects, depending on scope and complexity. We'll give you a clear timeline during your initial strategy call before any commitment is made.</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+Do you work with startups and small businesses?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">Absolutely. Some of our most impactful work has been with small and mid-size businesses that needed enterprise-level thinking without the enterprise price tag. We tailor our scope and pricing to fit your stage.</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+What industries do you have the most experience in?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">Our deepest experience spans Government & Defense, HR & Organizational Development, Financial Services, Healthcare, and Retail. That said, our frameworks are designed to apply across sectors — strategy and people challenges are universal.</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+How is Egodia different from other consulting firms?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">We combine legal expertise, military-grade operational discipline, and frontline HR experience — a combination you won't find at most firms. We also stay through implementation. We don't hand you a report and disappear.</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+What does the first step look like?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">It starts with a free 30-minute strategy call. No sales pitch — just a genuine conversation about your situation. From there, we'll propose a scoped engagement or point you toward the right resource, even if it's not us.</div>
+</div>
+<div class="faq-item">
+<button class="faq-question" onclick="toggleFaq(this)">
+Do you offer retainer or ongoing advisory services?
+<span class="faq-chevron">+</span>
+</button>
+<div class="faq-answer">Yes. Many clients retain Egodia on a monthly advisory basis after an initial engagement — giving them on-demand access to senior-level thinking without the cost of a full-time hire. Packages start at a flexible monthly rate.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- WHATSAPP FLOAT -->
+
+<div class="whatsapp-float">
+<div class="whatsapp-tooltip">Chat with us on WhatsApp</div>
+<a href="https://wa.me/14808590500" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+</svg>
+</a>
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+<div class="footer-logo">Egodia<span>.</span> Consulting LLC</div>
+<p>© 2026 Egodia Consulting LLC. All rights reserved.</p>
+<ul class="footer-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</footer>
+
+<script>
+// Mobile menu
+function toggleMenu() {
+document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(e => {
+if (e.isIntersecting) {
+e.target.classList.add('visible');
+observer.unobserve(e.target);
+}
+});
+}, { threshold: 0.12 });
+reveals.forEach(r => observer.observe(r));
+
+// Trigger hero reveals on load
+window.addEventListener('load', () => {
+document.querySelectorAll('#home .reveal').forEach(el => {
+el.classList.add('visible');
+});
+});
+
+// Nav shadow on scroll
+window.addEventListener('scroll', () => {
+document.querySelector('nav').style.boxShadow =
+window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.08)' : 'none';
+});
+
+// Animated counters
+function animateCounter(el) {
+const target = parseInt(el.getAttribute('data-target'));
+const duration = 1800;
+const step = target / (duration / 16);
+let current = 0;
+const timer = setInterval(() => {
+current += step;
+if (current >= target) {
+el.textContent = target;
+clearInterval(timer);
+} else {
+el.textContent = Math.floor(current);
+}
+}, 16);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+entries.forEach(e => {
+if (e.isIntersecting) {
+animateCounter(e.target);
+counterObserver.unobserve(e.target);
+}
+});
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.metric-num[data-target]').forEach(el => counterObserver.observe(el));
+
+// FAQ accordion
+function toggleFaq(btn) {
+const answer = btn.nextElementSibling;
+const isOpen = btn.classList.contains('open');
+document.querySelectorAll('.faq-question.open').forEach(q => {
+q.classList.remove('open');
+q.nextElementSibling.classList.remove('open');
+});
+if (!isOpen) {
+btn.classList.add('open');
+answer.classList.add('open');
+}
+}
+
+// Form submit
+function submitForm() {
+const email = document.getElementById('email').value;
+const fname = document.getElementById('fname').value;
+if (!fname || !email) {
+alert('Please fill in at least your name and email.');
+return;
+}
+document.getElementById('formSuccess').style.display = 'block';
+document.querySelectorAll('#contactForm input, #contactForm select, #contactForm textarea')
+.forEach(el => el.value = '');
+setTimeout(() => {
+document.getElementById('formSuccess').style.display = 'none';
+}, 5000);
+}
+</script>
 
 </body>
-
 </html>
